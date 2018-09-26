@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<title>Activités three.js</title>
+		<link rel="stylesheet" href="css/style.css">
+		<script src="lib/three.min.js"></script>
+		<script src="js/base.js"></script>
+		<script src="js/scene.js"></script> 
+
+	</head>
+
+	<body>
+
+	</body>
+
+	<script>
+
+		var width, height ; 
+		var renderer, scene, camera ;
+		var temps, delta, clock ;
+		var controls ;  
+
+		init("scene.config") ;  
+		animate() ; 
+
+		function init(grapheScene){
+			width  = window.innerWidth ; 
+			height = window.innerHeight ; 
+			
+			renderer = new THREE.WebGLRenderer({antialias:true}) ; 
+			renderer.setSize(width, height) ; 
+			document.body.appendChild(renderer.domElement) ; 
+
+			camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 1000.0) ;
+			camera.position.set(0,1.7,0) ;  
+			// camera.lookAt(new THREE.Vector3(0,1.5,0)) ; 
+
+			controls = new KeyboardControls(camera) ; 
+
+			scene = creerScene() ; 
+
+			temps = 0  ; 
+			clock = new THREE.Clock() ; 
+
+			window.addEventListener("resize", function (){
+				width  = window.innerWidth ; 
+				height = window.innerHeight ; 
+				camera.aspect = width / height ; 
+				camera.updateProjectionMatrix() ; 
+				renderer.setSize(width, height) ; 
+			}) ; 
+
+			document.addEventListener("mousedown", mouseDown, false) ; 
+			// document.addEventListener("mousemove", mouseMove, false) ; 
+			document.addEventListener("keydown",   keyDown, false) ; 
+			document.addEventListener("keyup",     keyUp, false) ; 
+		}
+
+
+		function animate(){
+			requestAnimationFrame(animate) ; 
+			delta = clock.getDelta() ; 
+			temps += delta ; 
+			controls.update(delta) ; 
+			renderer.render(scene,camera) ; 
+		}
+
+	</script>
+</html>
