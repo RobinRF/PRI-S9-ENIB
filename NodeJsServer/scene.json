@@ -1,0 +1,122 @@
+{
+  "materiaux" : [
+    { 
+      "nom"     : "parquet1", 
+      "type"    : "lambertTexture",
+      "url"    : "assets/textures/sols_plafonds/parquet1.jpg",
+      "nx" : 10, "ny" : 10
+    } ,
+    {
+      "nom"     : "moquette", 
+      "type"    : "lambertTexture",
+      "url"    : "assets/textures/sols_plafonds/moquette.jpg",
+      "nx" : 10, "ny" : 10
+    } ,
+    {
+      "nom"     : "brique50", 
+      "type"    : "lambertTexture",
+      "url"    : "assets/textures/murs/bricks3.jpg",
+      "nx" : 10, "ny" : 5
+    } ,
+    {
+      "nom"     : "dante", 
+      "type"    : "lambertTexture",
+      "url"    : "assets/textures/murs/dante.jpg",
+      "nx" : 1, "ny" : 1
+    } 
+  ] , 
+
+  "sol" : {
+    "taille"   : 50 , 
+    "materiau" : "parquet1" 
+  },
+
+  "posters" : [
+    {
+      "cle" : "poster1",
+      "nom" : "poster1",
+      "url" : "assets/images/brest0/LaPorteNationale.jpg",
+      "largeur" : 3.0,
+      "hauteur" : 2.0
+    },
+    {
+      "cle" : "poster2",
+      "nom" : "poster2",
+      "url" : "assets/images/brest0/LaRueDeSiam.jpg",
+      "largeur" : 3.0,
+      "hauteur" : 2.0
+    },
+    {
+      "cle" : "poster3",
+      "nom" : "poster3",
+      "url" : "assets/images/brest0/LesGares.jpg",
+      "largeur" : 3.0,
+      "hauteur" : 2.0
+    },
+    {
+      "cle" : "poster4",
+      "nom" : "poster4",
+      "url" : "assets/images/brest0/LesGlacisEtLaRueDeParis.jpg",
+      "largeur" : 3.0,
+      "hauteur" : 2.0
+    },
+    {
+      "cle" : "poster5",
+      "nom" : "poster5",
+      "url" : "assets/images/brest0/LHotelDeVille.jpg",
+      "largeur" : 3.0,
+      "hauteur" : 2.0
+    },
+    {
+      "cle" : "poster6",
+      "nom" : "poster6",
+      "url" : "assets/images/brest0/PlaceDesPortes.jpg",
+      "largeur" : 3.0,
+      "hauteur" : 2.0
+    },
+    {
+      "cle" : "poster7",
+      "nom" : "poster7",
+      "url" : "assets/images/brest0/PontNational.jpg",
+      "largeur" : 3.0,
+      "hauteur" : 2.0
+    }
+  ],
+
+  "cloisons" : [
+
+    {"cle":"cloison1","nom":"cloison1","largeur":10,"hauteur":4,"epaisseur":0.1,"materiau":"dante"},
+    {"cle":"cloison2","nom":"cloison2","largeur":10,"hauteur":4,"epaisseur":0.1,"materiau":"brique50"}
+  ],
+
+  "poses" : [
+    {"cle" : "poster1", "pere" : "scene",
+     "x" : 10, "y" : 3, "z" : 0, "angle" : 0
+   },
+   {"cle" : "poster2", "pere" : "scene",
+     "x" : 6, "y" : 3, "z" : 0, "angle" : 0
+   },
+   {"cle" : "poster3", "pere" : "scene",
+     "x" : 2, "y" : 3, "z" : 0, "angle" : 0
+   },
+   {"cle" : "poster4", "pere" : "scene",
+     "x" : -2, "y" : 3, "z" : 0, "angle" : 0
+   },
+   {"cle" : "poster5", "pere" : "scene",
+     "x" : 10, "y" : 3, "z" : 5, "angle" : 0
+   },
+   {"cle" : "poster6", "pere" : "scene",
+     "x" : 10, "y" : 3, "z" : 10, "angle" : 0
+   },
+   {"cle" : "poster7", "pere" : "scene",
+     "x" : -5, "y" : 3, "z" : 5, "angle" : 0
+   },
+   {"cle" : "cloison1", "pere" : "scene",
+     "x" : 10, "y" : 0, "z" : -5, "angle" : 0
+   },
+   {"cle" : "cloison2", "pere" : "scene",
+     "x" : -10, "y" : 0, "z" : -5, "angle" : 0
+   }
+ ]
+  
+}
