@@ -103,13 +103,13 @@
      "x" : -2, "y" : 3, "z" : 0, "angle" : 0
    },
    {"cle" : "poster5", "pere" : "scene",
-     "x" : 10, "y" : 3, "z" : 5, "angle" : 0
+     "x" : 10, "y" : 3, "z" : 5, "angle" : -90
    },
    {"cle" : "poster6", "pere" : "scene",
-     "x" : 10, "y" : 3, "z" : 10, "angle" : 0
+     "x" : 10, "y" : 3, "z" : 10, "angle" : 90
    },
    {"cle" : "poster7", "pere" : "scene",
-     "x" : -5, "y" : 3, "z" : 5, "angle" : 0
+     "x" : -5, "y" : 3, "z" : 5, "angle" : -90
    },
    {"cle" : "cloison1", "pere" : "scene",
      "x" : 10, "y" : 0, "z" : -5, "angle" : 0
