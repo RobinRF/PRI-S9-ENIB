@@ -1,156 +1,86 @@
-
-
-// Scène contenant : 
-//	- 1 source ponctuelle
-//	- 1 sol
-//	- 1 sphere
-
-var data = {
-	"materiaux" : [
-			{	
-			  "nom"     : "parquet1", 
-			  "type"    : "lambertTexture",
-			   "url"    : "assets/textures/sols_plafonds/parquet1.jpg",
-			   "nx" : 10, "ny" : 10
-			} ,
-			{
-			  "nom"     : "moquette", 
-			  "type"    : "lambertTexture",
-			   "url"    : "assets/textures/sols_plafonds/moquette.jpg",
-			   "nx" : 10, "ny" : 10
-			} ,
-			{
-			  "nom"     : "brique50", 
-			  "type"    : "lambertTexture",
-			   "url"    : "assets/textures/murs/bricks3.jpg",
-			   "nx" : 10, "ny" : 5
-			} ,
-			{
-			  "nom"     : "dante", 
-			  "type"    : "lambertTexture",
-			   "url"    : "assets/textures/murs/dante.jpg",
-			   "nx" : 1, "ny" : 1
-			} 
-
-
-		      ] , 
-
-	"sol" : {
-			"taille"   : 50 , 
-			"materiau" : "parquet1" 
-		},
-
-	"posters" : [
-			{
-				"cle" : "poster1",
-				"nom" : "poster1",
-				"url" : "assets/images/brest0/LaPorteNationale.jpg",
-				"largeur" : 3.0,
-				"hauteur" : 2.0
-			},
-			{
-				"cle" : "poster2",
-				"nom" : "poster2",
-				"url" : "assets/images/brest0/LaRueDeSiam.jpg",
-				"largeur" : 3.0,
-				"hauteur" : 2.0
-			},
-			{
-				"cle" : "poster3",
-				"nom" : "poster3",
-				"url" : "assets/images/brest0/LesGares.jpg",
-				"largeur" : 3.0,
-				"hauteur" : 2.0
-			},
-			{
-				"cle" : "poster4",
-				"nom" : "poster4",
-				"url" : "assets/images/brest0/LesGlacisEtLaRueDeParis.jpg",
-				"largeur" : 3.0,
-				"hauteur" : 2.0
-			},
-			{
-				"cle" : "poster5",
-				"nom" : "poster5",
-				"url" : "assets/images/brest0/LHotelDeVille.jpg",
-				"largeur" : 3.0,
-				"hauteur" : 2.0
-			},
-			{
-				"cle" : "poster6",
-				"nom" : "poster6",
-				"url" : "assets/images/brest0/PlaceDesPortes.jpg",
-				"largeur" : 3.0,
-				"hauteur" : 2.0
-			},
-			{
-				"cle" : "poster7",
-				"nom" : "poster7",
-				"url" : "assets/images/brest0/PontNational.jpg",
-				"largeur" : 3.0,
-				"hauteur" : 2.0
-			}
-		    ],
-
-	"cloisons" : [
-
-			{"cle":"cloison1","nom":"cloison1","largeur":10,"hauteur":4,"epaisseur":0.1,"materiau":"dante"},
-			{"cle":"cloison2","nom":"cloison2","largeur":10,"hauteur":4,"epaisseur":0.1,"materiau":"brique50"}
-		    ],
-
-	"poses" : [
-			{"cle" : "poster1", "pere" : "scene",
-                         "x" : 10, "y" : 3, "z" : 0, "angle" : 0
-			},
-			{"cle" : "poster2", "pere" : "scene",
-                         "x" : 6, "y" : 3, "z" : 0, "angle" : 0
-			},
-			{"cle" : "poster3", "pere" : "scene",
-                         "x" : 2, "y" : 3, "z" : 0, "angle" : 0
-			},
-			{"cle" : "poster4", "pere" : "scene",
-                         "x" : -2, "y" : 3, "z" : 0, "angle" : 0
-			},
-			{"cle" : "poster5", "pere" : "scene",
-                         "x" : 10, "y" : 3, "z" : 5, "angle" : -Math.PI/2
-			},
-			{"cle" : "poster6", "pere" : "scene",
-                         "x" : 10, "y" : 3, "z" : 10, "angle" : -Math.PI/2
-			},
-			{"cle" : "poster7", "pere" : "scene",
-                         "x" : -5, "y" : 3, "z" : 5, "angle" : Math.PI/2
-			},
-			{"cle" : "cloison1", "pere" : "scene",
-                         "x" : 10, "y" : 0, "z" : -5, "angle" : 0
-			},
-			{"cle" : "cloison2", "pere" : "scene",
-                         "x" : -10, "y" : 0, "z" : -5, "angle" : 0
-			}
-
-
-
-
-		  ]
-} ; 
-
-
 var materiaux = {} ; 
 var noeuds    = {} ;
 var listeIntersection = [] ; 
-
+var data= {} ;
 var pointeur ; 
-var mire ; 
+var mire ;
+var url = "http://localhost:8020/index";
+
+function init(grapheScene){
+	width  = window.innerWidth ; 
+	height = window.innerHeight ; 
+	
+	renderer = new THREE.WebGLRenderer({antialias:true}) ; 
+	renderer.setSize(width, height) ; 
+	document.body.appendChild(renderer.domElement) ; 
+
+	camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 1000.0) ;
+	camera.position.set(0,1.7,0) ;  
+	// camera.lookAt(new THREE.Vector3(0,1.5,0)) ; 
+
+	controls = new KeyboardControls(camera) ; 
+
+	scene = creerScene() ; 
+
+	temps = 0  ; 
+	clock = new THREE.Clock() ; 
+
+	window.addEventListener("resize", function (){
+		width  = window.innerWidth ; 
+		height = window.innerHeight ; 
+		camera.aspect = width / height ; 
+		camera.updateProjectionMatrix() ; 
+		renderer.setSize(width, height) ; 
+	}) ; 
+
+	document.addEventListener("mousedown", mouseDown, false) ; 
+	// document.addEventListener("mousemove", mouseMove, false) ; 
+	document.addEventListener("keydown",   keyDown, false) ; 
+	document.addEventListener("keyup",     keyUp, false) ; 
+}
+
+
+function animate(){
+	requestAnimationFrame(animate) ; 
+	delta = clock.getDelta() ; 
+	temps += delta ; 
+	controls.update(delta) ; 
+	renderer.render(scene,camera) ; 
+}
 
 // ======
 // Parser
 // ======
+
+function fileReader(name){
+	var xmlhttp = new XMLHttpRequest();
+	
+	xmlhttp.onreadystatechange = 	function() {
+		console.log(this.status)
+		if (this.readyState==4 && this.status==200) {
+			data = JSON.parse(this.responseText);
+			init("scene.config") ;
+			animate() ; 
+		}
+		else if (this.readyState==4 && this.status==404) {
+			document.getElementById("body").innerHTML="<H1>CA MARCHE PAS :'( </H1>"
+		}
+
+	};
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send(); 
+}
+
 
 function parser(data,scene){
 
 	// Création des matériaux
 	// ----------------------
 
-	var _materiaux = data.materiaux ; 
+	console.log(data.materiaux)
+	var _materiaux = data.materiaux ;
+	console.log("vous etes ici")
+	console.log(_materiaux) 
 	var _mat ; 
 	for(var i=0; i<_materiaux.length;i++){
 		_mat = _materiaux[i] ; 
@@ -207,8 +137,8 @@ function parser(data,scene){
 		_pose = _poses[i] ; 
 		console.log(_pose.cle) ; 
 		noeud = noeuds[_pose.cle] ; 
-		noeud.position.set(_pose.x, _pose.y, _pose.z) ; 
-		noeud.rotation.y = _pose.angle ; 
+		noeud.position.set(_pose.x, _pose.y, _pose.z) ;
+		noeud.rotation.y = _pose.angle*Math.PI/180 ; 
 	}
 }
 

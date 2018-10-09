@@ -133,6 +133,9 @@ function parentDe(pere,fils){
 
 var projector   = new THREE.Projector() ;
 var listeIntersection = [] ;  
+var camPos = null;
+var camDir = null;
+var mouseClicked = false;
 
 function mouseDown(event){
 	var vector = new THREE.Vector3(
@@ -147,10 +150,29 @@ function mouseDown(event){
 	var intersects = raycaster.intersectObjects(listeIntersection) ; 
 
 	if(intersects.length > 0){
+		mouseClicked = true;
 		intersects[0].object.material.transparent = true ; 
 		//alert("HIT sur : " + intersects[0].object.name) ; 
 		//alert( intersects[0].point.x+" , "+intersects[0].point.y+" , "+intersects[0].point.z) ; 
-        pointeur.position.set(intersects[0].point.x,intersects[0].point.y,+intersects[0].point.z) ; 
+		pointeur.position.set(intersects[0].point.x,intersects[0].point.y,+intersects[0].point.z) ;
+		var world = intersects[0].object.matrixWorld;
+		//console.log(camera.position)
+		//camera.position.set(intersects[0].point.x,intersects[0].point.y,+intersects[0].point.z)
+		//camera.object.position.set(intersects[0].point.x,intersects[0].point.y,+intersects[0].point.z)
+		//console.log(camera.position)
+		// camera.matrixWorld=world;
+		// console.log(camera.matrixWorld);
+		// camera.translateX(2);
+		// console.log(intersects[0].object)
+		// camera.cible=intersects[0].object.position;
+		// vector = camera.getWorldDirection();
+		// angle = Math.atan2(vector.x,vector.z);
+       	var origin = new THREE.Vector3(0,0,0);
+       	var ext = new THREE.Vector3(0,0,2);
+    	origin.applyMatrix4(world);
+		ext.applyMatrix4(world);
+       	camPos = ext;
+       	camDir = origin; 
 	}
 }
 
@@ -163,6 +185,7 @@ function mouseMove(event){
 }
 
 function keyDown(event){
+	mouseClicked=false;
 	switch(event.keyCode){
 		case 33 : // HAUT
 			controls.plusHaut = true ; 
@@ -227,6 +250,7 @@ var KeyboardControls = function(object){
 	this.aDroite   = false ; 
 }
 
+
 KeyboardControls.prototype.update = function(dt){
 
 
@@ -257,9 +281,20 @@ KeyboardControls.prototype.update = function(dt){
 
 	this.direction.set(Math.cos(this.angle),0.0,-Math.sin(this.angle)) ; 
 	
-	this.cible.x = this.position.x + Math.cos(this.angle) ; 
-	this.cible.y = this.position.y ; 
-	this.cible.z = this.position.z - Math.sin(this.angle) ; 
+
+	if(mouseClicked) {
+		this.object.position.set(camPos.x,camPos.y,camPos.z);
+		this.position.set(camPos.x,camPos.y,camPos.z);
+		this.cible.set(camDir.x,camDir.y,camDir.z);
+		vector = camera.getWorldDirection();
+		this.angle = -Math.atan2(vector.z,vector.x);
+
+	} else {
+		this.cible.set(this.position.x + Math.cos(this.angle), 
+						this.position.y, 
+						this.position.z - Math.sin(this.angle))	
+		 
+	} 
 
 	this.object.lookAt(this.cible) ; 
 	
