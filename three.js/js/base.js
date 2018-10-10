@@ -133,9 +133,11 @@ function parentDe(pere,fils){
 
 var projector   = new THREE.Projector() ;
 var listeIntersection = [] ;  
-var camPos = null;
-var camDir = null;
+//var ext = null;
+//var origin = null;
 var mouseClicked = false;
+var ext = new THREE.Vector3()
+var origin = new THREE.Vector3()
 
 function mouseDown(event){
 	var vector = new THREE.Vector3(
@@ -167,12 +169,12 @@ function mouseDown(event){
 		// camera.cible=intersects[0].object.position;
 		// vector = camera.getWorldDirection();
 		// angle = Math.atan2(vector.x,vector.z);
-       	var origin = new THREE.Vector3(0,0,0);
-       	var ext = new THREE.Vector3(0,0,2);
+       	origin = new THREE.Vector3(0,0,0);
+       	ext = new THREE.Vector3(0,0,2);
     	origin.applyMatrix4(world);
 		ext.applyMatrix4(world);
-       	camPos = ext;
-       	camDir = origin; 
+       	//ext = ext;
+       	//origin = origin; 
 	}
 }
 
@@ -283,9 +285,9 @@ KeyboardControls.prototype.update = function(dt){
 	
 
 	if(mouseClicked) {
-		this.object.position.set(camPos.x,camPos.y,camPos.z);
-		this.position.set(camPos.x,camPos.y,camPos.z);
-		this.cible.set(camDir.x,camDir.y,camDir.z);
+		this.object.position.set(ext.x,ext.y,ext.z);
+		this.position.set(ext.x,ext.y,ext.z);
+		this.cible.set(origin.x,origin.y,origin.z);
 		vector = camera.getWorldDirection();
 		this.angle = -Math.atan2(vector.z,vector.x);
 
