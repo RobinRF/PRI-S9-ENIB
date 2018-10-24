@@ -35,29 +35,52 @@ function creerSphere(nom,rayon, subdivisions, materiau){
 }
 
 
-function creerPoster(nom,largeur, hauteur, nomImage){
+function creerPoster(nom,largeur, hauteur, nomImage, titre){
 	var geo   = new THREE.PlaneGeometry(largeur, hauteur) ; 
 	var mat   = creerLambertTexture(nomImage, 0xffffff) ; 
 	var mesh  = new THREE.Mesh(geo, mat) ; 
-	mesh.name = nom ;
+	
 	return mesh ;   
 }
 
-function creerPoster1(nom,largeur, hauteur, nomImage){
+function creerPoster1(nom,largeur, hauteur, nomImage, titre, description){
 	var geo    = new THREE.PlaneGeometry(largeur, hauteur) ; 
 	var mat    = creerLambertTexture(nomImage, 0xffffff) ; 
 	var mesh   = new THREE.Mesh(geo, mat) ; 
 	var dos    = new THREE.Mesh(geo, materiauBlanc) ; 
+	var loader = new THREE.FontLoader();
+	var groupe = new THREE.Group() ; 
+	/*loader.load( '/assets/fonts/helvetiker_regular.typeface.json', function ( font ) {
+
+	var geometry = new THREE.TextGeometry( titre , {
+		font: font,
+		size: 80,
+		height: 5,
+		curveSegments: 12,
+		bevelEnabled: true,
+		bevelThickness: 10,
+		bevelSize: 8,
+		bevelSegments: 5
+	} );
+	groupe.add(font);
+} );*/
+	//var text = new THREE.Mesh(textgeometry, materiauBlanc);
+   // text.position.y = -1;
+
 	dos.rotation.y = Math.PI ; 
 	dos.position.z = -0.01 ; 
 	mesh.position.z = 0.01 ; 
-
+	mesh.name = nom ;
+	mesh.titre= titre;
+	mesh.description = description;
     listeIntersection.push(mesh) ; 
 
-	var groupe = new THREE.Group() ; 
+	
 	groupe.add(mesh) ; 
-	groupe.add(dos) ;  
+	groupe.add(dos) ; 
+	//groupe.add(text); 
 	groupe.name  = nom ;
+
 	return groupe ;   
 }
 
@@ -154,7 +177,7 @@ function mouseDown(event){
 	if(intersects.length > 0){
 		mouseClicked = true;
 		intersects[0].object.material.transparent = true ; 
-		//alert("HIT sur : " + intersects[0].object.name) ; 
+		alert("titre du poster : " + intersects[0].object.titre +"\ndescription : "+intersects[0].object.description) ; 
 		//alert( intersects[0].point.x+" , "+intersects[0].point.y+" , "+intersects[0].point.z) ; 
 		pointeur.position.set(intersects[0].point.x,intersects[0].point.y,+intersects[0].point.z) ;
 		var world = intersects[0].object.matrixWorld;

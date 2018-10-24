@@ -97,7 +97,7 @@ function parser(data,scene){
 		poster = creerPoster1(_poster.cle, 
                                      _poster.largeur, _poster.hauteur, 
                                      //"assets/images/gala-2018/AG-1.jpg") ; 
-				     _poster.url) ; 
+				     _poster.url, _poster.titre, _poster.description) ; 
 		noeuds[_poster.cle] = poster ; 
 		scene.add(poster) ;   
 	}

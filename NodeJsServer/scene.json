@@ -37,49 +37,63 @@
       "nom" : "poster1",
       "url" : "assets/images/brest0/LaPorteNationale.jpg",
       "largeur" : 3.0,
-      "hauteur" : 2.0
+      "hauteur" : 2.0, 
+      "titre" : "titre_poster1",
+      "description" : "descrpition poster1"
     },
     {
       "cle" : "poster2",
       "nom" : "poster2",
       "url" : "assets/images/brest0/LaRueDeSiam.jpg",
       "largeur" : 3.0,
-      "hauteur" : 2.0
+      "hauteur" : 2.0,
+      "titre" : "titre_poster2",
+      "description" : "descrpition poster2"
     },
     {
       "cle" : "poster3",
       "nom" : "poster3",
       "url" : "assets/images/brest0/LesGares.jpg",
       "largeur" : 3.0,
-      "hauteur" : 2.0
+      "hauteur" : 2.0,
+      "titre" : "titre_poster3",
+      "description" : "descrpition poster3"
     },
     {
       "cle" : "poster4",
       "nom" : "poster4",
       "url" : "assets/images/brest0/LesGlacisEtLaRueDeParis.jpg",
       "largeur" : 3.0,
-      "hauteur" : 2.0
+      "hauteur" : 2.0,
+      "titre" : "titre_poster4",
+      "description" : "descrpition poster4"
     },
     {
       "cle" : "poster5",
       "nom" : "poster5",
       "url" : "assets/images/brest0/LHotelDeVille.jpg",
       "largeur" : 3.0,
-      "hauteur" : 2.0
+      "hauteur" : 2.0,
+      "titre" : "titre_poster5",
+      "description" : "descrpition poster5"
     },
     {
       "cle" : "poster6",
       "nom" : "poster6",
       "url" : "assets/images/brest0/PlaceDesPortes.jpg",
       "largeur" : 3.0,
-      "hauteur" : 2.0
+      "hauteur" : 2.0,
+      "titre" : "titre_poster6",
+      "description" : "descrpition poster6"
     },
     {
       "cle" : "poster7",
       "nom" : "poster7",
       "url" : "assets/images/brest0/PontNational.jpg",
       "largeur" : 3.0,
-      "hauteur" : 2.0
+      "hauteur" : 2.0,
+      "titre" : "titre_poster7",
+      "description" : "descrpition poster7"
     }
   ],
 

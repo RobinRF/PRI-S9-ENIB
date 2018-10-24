@@ -12,7 +12,23 @@ var data = fs.readFileSync("scene.json");
 content = JSON.parse(data);
 // console.log(content)
 
-router.route("/index").get(function(req, res) {
+router.get("/index", function(req, res) {
+	res.header("Access-Control-Allow-Origin", "*");
+  	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	res.json(content);
+});
+
+router.get("/images/:name", function(req, res) {
+	var path = 'C:\\laragon\\www\\NodeJs\\images\\';
+	var file = req.params.name + ".jpg";
+	res.sendFile(path + file);
+});
+
+router.get("/fonts/:name", function(req, res) {
+	var path = 'C:\\laragon\\www\\NodeJs\\fonts\\';
+	var file = req.params.name + ".typeface.json";
+	var data = fs.readFileSync(path + file);
+	content = JSON.parse(data);
 	res.header("Access-Control-Allow-Origin", "*");
   	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	res.json(content);
@@ -21,5 +37,3 @@ router.route("/index").get(function(req, res) {
 app.use("/", router);
 
 app.listen(port);
-
-
