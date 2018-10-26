@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Activités three.js</title>
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/custom.css">
+</head>
+<body>
+	<script src="lib/three.min.js"></script>
+	<script src="js/base.js"></script>
+	<script src="js/scene.js"></script>
+	<script src="js/Visitor.js"></script>
+	<script src="js/FirstPersonCamera.js"></script>
+	<script src="js/Controller.js"></script>
+	<script src="js/DataSource.js"></script>
+	<script src="js/HttpDataSource.js"></script>
+	<script src="js/Poster.js"></script>
+	<script src="js/NimbusShape.js"></script>
+	<script src="js/NimbusCylinder.js"></script>
+	<script src="js/FocusShape.js"></script>
+	<script src="js/FocusCone.js"></script>
+	<script src="js/HtmlDisplay.js"></script>
+
+	<script>
+
+		// Global var
+		var scene = null;
+		var renderer = null;
+		var camera = null;
+		var visitor = null;
+		var controller = null;
+		var dataSource = null;
+		var display = null;
+		var visitorFocus = null;
+
+		function initialize() {
+			// Renderer 
+			renderer = new THREE.WebGLRenderer();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			document.body.appendChild(renderer.domElement);
+
+			// Data source
+			dataSource = new HttpDataSource("assets/scenes/test.json");
+			//dataSource = new HttpDataSource("assets/scenes/test.json", "localhost", 8080);
+
+			// Create a scene
+			creerScene(dataSource);
+
+			// Create a visitor
+			visitor = new Visitor(new THREE.Vector3(0, 3, 0), new THREE.Vector3(1, 3, 0), 0.1, 0.01);
+
+			// Create a visitor focus
+			visitorFocus = new FocusCone(visitor, Math.PI/2, 4);
+			visitor.attach(visitorFocus);
+			scene.add(visitorFocus);
+
+			// Create a camera
+			camera = new FirstPersonCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000, visitor);
+			visitor.attach(camera);
+			visitor.notify()
+
+			// Add controller and map events
+			controller = new Controller(visitor);
+			document.addEventListener("keydown", controller.keyDown.bind(this)); 
+			document.addEventListener("mousedown", controller.mouseDown.bind(this)); 
+
+			// Show axis
+			scene.add(new THREE.AxisHelper(5));
+
+			console.clear();
+
+			// Add display
+			window.addEventListener("DOMContentLoaded", function(){
+				display = new HtmlDisplay(document.getElementById("listView"), document.getElementById("contentView"));
+				window.setInterval(displayUpdate, 250);
+				animate();
+			});
+		}
+
+		function animate() {
+			renderer.render(scene, camera);
+			requestAnimationFrame(animate);
+		}
+
+		function displayUpdate() {
+			display.update();
+		}
+
+		initialize();
+		
+	</script>
+
+	<div class="overlay">
+		<ul class="poster-list" id="listView">
+
+		</ul>
+
+		<p class="poster-content" id="contentView">
+
+		</p>
+	</div>
+</body>
+</html>
