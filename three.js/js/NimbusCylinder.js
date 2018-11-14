@@ -12,13 +12,6 @@ class NimbusCylinder extends THREE.Object3D {
 
 	}
 
-	
-/*	update() {
-		if (this.distanceToobserver() <= this.radius) {
-			this.visible = true;
-		}
-		this.visible = false;
-	}*/	
 	isVisible() {
 		return this.getDistanceToObserver() <= this.radius
 	}

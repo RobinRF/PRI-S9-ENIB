@@ -43,7 +43,7 @@ function creerPoster(nom,largeur, hauteur, nomImage, titre){
 	return mesh ;   
 }
 
-function creerPoster1(nom,largeur, hauteur, nomImage, titre, description){
+function creerPoster1(nom,largeur, hauteur, nomImage, titre, description,radius=5){
 	var geo    = new THREE.PlaneGeometry(largeur, hauteur) ; 
 	var mat    = creerLambertTexture(nomImage, 0xffffff) ; 
 	var mesh   = new THREE.Mesh(geo, mat) ; 
@@ -80,7 +80,7 @@ function creerPoster1(nom,largeur, hauteur, nomImage, titre, description){
 	plaque=creerText(titre,largeur,hauteur)
 	plaque.position.y = -hauteur*0.6
 	groupe.add(plaque)
-	var nimbus=new NimbusCylinder(camera.getObjectByName("FocusCone"),5,groupe)
+	var nimbus=new NimbusCylinder(camera.getObjectByName("FocusCone"),radius,groupe)
 	groupe.add(nimbus)
 	groupe.name  = nom ;
 	groupe.description=description

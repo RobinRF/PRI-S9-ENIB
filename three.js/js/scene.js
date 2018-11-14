@@ -117,7 +117,8 @@ function parser(data,scene){
 								_poster.hauteur, 
 								_poster.url, 
 								_poster.titre, 
-								_poster.description); 
+								_poster.description,
+								_poster.radius); 
 		noeuds[_poster.cle] = poster ; 
 		scene.add(poster) ;   
 	}
