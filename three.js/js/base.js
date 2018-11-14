@@ -48,7 +48,6 @@ function creerPoster1(nom,largeur, hauteur, nomImage, titre, description){
 	var mat    = creerLambertTexture(nomImage, 0xffffff) ; 
 	var mesh   = new THREE.Mesh(geo, mat) ; 
 	var dos    = new THREE.Mesh(geo, materiauBlanc) ; 
-	var loader = new THREE.FontLoader();
 	var groupe = new THREE.Group() ; 
 	/*loader.load( '/assets/fonts/helvetiker_regular.typeface.json', function ( font ) {
 
@@ -70,7 +69,7 @@ function creerPoster1(nom,largeur, hauteur, nomImage, titre, description){
 	dos.rotation.y = Math.PI ; 
 	dos.position.z = -0.01 ; 
 	mesh.position.z = 0.01 ; 
-	mesh.name = nom ;
+	//mesh.name = nom ;
 	mesh.titre= titre;
 	mesh.description = description;
     listeIntersection.push(mesh) ; 
@@ -78,13 +77,48 @@ function creerPoster1(nom,largeur, hauteur, nomImage, titre, description){
 	
 	groupe.add(mesh) ; 
 	groupe.add(dos) ; 
-	//groupe.add(text); 
+	plaque=creerText(titre,largeur,hauteur)
+	plaque.position.y = -hauteur*0.6
+	groupe.add(plaque)
+	var nimbus=new NimbusCylinder(camera.getObjectByName("FocusCone"),5,groupe)
+	groupe.add(nimbus)
 	groupe.name  = nom ;
+	groupe.description=description
+	groupe.nimbus=nimbus;
 
 	return groupe ;   
 }
 
+function creerText(description,largeur,hauteur){
+	canvas = document.createElement('canvas')
+	context = canvas.getContext('2d');
+	canvas.width=1000
+	canvas.heigth=5
+	context.font = '80pt Arial';
+	context.fillStyle = 'white';
+	context.fillRect(0, 0, canvas.width - 0, canvas.height - 0);
+	context.fillStyle = 'black';
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    context.fillText(description, canvas.width / 2, canvas.height / 2);
+	//context.fillStyle = 'white'
+	//context.fillRect(0, 0, canvas.width, canvas.height);
+	//context.fillStyle = 'blue';
+	//
+	//context.textAlign = "center";
+    //context.textBaseline = "middle";
+	//context.fillText(description, canvas.width / 2, canvas.height / 2);
+	//context.scale(0.01,0.01)
+	//document.body.appendChild(canvas) 
 
+	var geometry = new THREE.PlaneGeometry(largeur*0.9, hauteur*0.1) ; 
+	texture = new THREE.CanvasTexture(canvas);
+	var material = new THREE.MeshLambertMaterial({color:0xffffff,map:texture}) ;
+	var mesh = new THREE.Mesh(geometry,material)
+    return mesh;
+
+
+}
 
 // ===================
 // Création de sources

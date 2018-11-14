@@ -4,7 +4,8 @@ var listeIntersection = [] ;
 var data= {} ;
 var pointeur ; 
 var mire ;
-var url = "http://localhost:8020/index";
+var url = "http://localhost:8020/";
+var display;
 
 function init(grapheScene){
 	width  = window.innerWidth ; 
@@ -15,7 +16,11 @@ function init(grapheScene){
 	document.body.appendChild(renderer.domElement) ; 
 
 	camera = new THREE.PerspectiveCamera(75, width/height, 0.1, 1000.0) ;
-	camera.position.set(0,1.7,0) ;  
+	camera.position.set(0,1.7,0) ;
+	visitor = new THREE.Group()
+	var test=new FocusCone(camera,Math.PI/2,5)
+	camera.add(test)
+
 	// camera.lookAt(new THREE.Vector3(0,1.5,0)) ; 
 
 	controls = new KeyboardControls(camera) ; 
@@ -37,6 +42,7 @@ function init(grapheScene){
 	// document.addEventListener("mousemove", mouseMove, false) ; 
 	document.addEventListener("keydown",   keyDown, false) ; 
 	document.addEventListener("keyup",     keyUp, false) ; 
+	display = new HtmlDisplay(document.getElementById("listView"), document.getElementById("contentView"));
 }
 
 
@@ -46,31 +52,40 @@ function animate(){
 	temps += delta ; 
 	controls.update(delta) ; 
 	renderer.render(scene,camera) ; 
+	display.update()
 }
 
 // ======
 // Parser
 // ======
 
-function fileReader(name){
+function fileReader(target,callback,arg){
 	var xmlhttp = new XMLHttpRequest();
-	
+	if (arg==null){arg=[]} 
 	xmlhttp.onreadystatechange = 	function() {
 		console.log(this.status)
 		if (this.readyState==4 && this.status==200) {
-			data = JSON.parse(this.responseText);
-			init("scene.config") ;
-			animate() ; 
+			arg.unshift(this.responseText);
+			return callback.apply(null,arg);
 		}
 		else if (this.readyState==4 && this.status==404) {
 			document.getElementById("body").innerHTML="<H1>CA MARCHE PAS :'( </H1>"
 		}
 
 	};
-	xmlhttp.open("GET", url, true);
+	xmlhttp.open("GET", url+target, true);
 	xmlhttp.send(); 
 }
 
+function startSim(noClue){
+	data = JSON.parse(noClue);
+	init("scene.config") ;
+	animate() ;
+}
+
+function printFontContent(servChat){
+
+}
 
 function parser(data,scene){
 
@@ -84,7 +99,10 @@ function parser(data,scene){
 	var _mat ; 
 	for(var i=0; i<_materiaux.length;i++){
 		_mat = _materiaux[i] ; 
-		materiaux[_mat.nom] = creerLambertTexture(_mat.url,0xffffff,_mat.nx,_mat.ny);
+		materiaux[_mat.nom] = creerLambertTexture(_mat.url,
+													0xffffff,
+													_mat.nx,
+													_mat.ny);
 		
 	} ; 
 
@@ -95,9 +113,11 @@ function parser(data,scene){
 	for(var i = 0; i <_posters.length; i++){
 		_poster = _posters[i] ; 
 		poster = creerPoster1(_poster.cle, 
-                                     _poster.largeur, _poster.hauteur, 
-                                     //"assets/images/gala-2018/AG-1.jpg") ; 
-				     _poster.url, _poster.titre, _poster.description) ; 
+								_poster.largeur, 
+								_poster.hauteur, 
+								_poster.url, 
+								_poster.titre, 
+								_poster.description); 
 		noeuds[_poster.cle] = poster ; 
 		scene.add(poster) ;   
 	}
@@ -109,8 +129,10 @@ function parser(data,scene){
 	for(var i = 0; i <_cloisons.length; i++){
 		_cloison = _cloisons[i] ; 
 		cloison = creerCloison(_cloison.cle, 
-                                     _cloison.largeur, _cloison.hauteur, _cloison.epaisseur,
-				     materiaux[_cloison.materiau]) ; 
+								_cloison.largeur, 
+								_cloison.hauteur, 
+								_cloison.epaisseur,
+				    			materiaux[_cloison.materiau]); 
 		noeuds[_cloison.cle] = cloison ; 
 		scene.add(cloison) ;   
 	} ; 
@@ -120,7 +142,6 @@ function parser(data,scene){
 	// ---------------
 
 	var _sol      = data["sol"] ; 
-	console.log(_sol) ; 
 	var _taille   = _sol.taille || 100.0 ; 
 	var _materiau = _sol.materiau  ; 
 	var sol = creerSol("sol",_taille,_taille,materiaux[_materiau]) ;
@@ -140,6 +161,7 @@ function parser(data,scene){
 		noeud.position.set(_pose.x, _pose.y, _pose.z) ;
 		noeud.rotation.y = _pose.angle*Math.PI/180 ; 
 	}
+
 }
 
 
@@ -188,6 +210,6 @@ function creerScene(){
 
 	// FIN
 	// =================================
-
+	console.log("scene crée")
 	return scene ; 
 }
