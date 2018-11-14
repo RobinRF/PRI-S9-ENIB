@@ -1,0 +1,39 @@
+canvas {
+ 	display: 			block;
+ 	position: 			absolute;
+ 	z-index:			-1;
+}
+
+.overlay {
+	position:			absolute;
+	background-color:	rgba(0, 0, 0, 0.3);
+	z-index:			100;
+	width:				80%;
+	height: 			28%;
+	top:				70%;
+	left:				10%;
+	padding-left:		10px;
+	color:				rgb(255, 255, 255);
+	font-family: 		Verdana,sans-serif;
+	border:				1px solid white;
+}
+
+.poster-list {
+	display: 			block;
+	float:				left;
+	width:				8%;
+	margin-right:		2%;
+	list-style-type:	none;
+	border-right:		2px solid rgb(255, 255, 255);
+}
+
+.poster-list li {
+	display: 			block;
+	padding-bottom:		10px;
+}
+
+.poster-content {
+	display: 			block;
+	width:				90%;
+	
+}
