@@ -4,14 +4,19 @@
 		<meta charset="utf-8">
 		<title>Activités three.js</title>
 		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="css/custom.css">
 		<script src="lib/three.min.js"></script>
 		<script src="js/base.js"></script>
 		<script src="js/scene.js"></script> 
+		<script src="js/NimbusCylinder.js"></script>
+		<script src="js/FocusCone.js"></script>
+		<script src="js/HtmlDisplay.js"></script>
+	
 
 	</head>
 
 	<body>
-
+		
 	</body>
 	<script>
 
@@ -19,10 +24,15 @@
 		var renderer, scene, camera ;
 		var temps, delta, clock ;
 		var controls ;  
-		fileReader(); 
+		fileReader("index",startSim); 
+		
 		
 
 		
 
 	</script>
+	<div class="overlay">
+		<ul class="poster-list" id="listView"></ul>
+		<p class="poster-content" id="contentView"></p>
+	</div>
 </html>
