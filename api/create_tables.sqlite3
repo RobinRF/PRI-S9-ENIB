@@ -1,0 +1,58 @@
+CREATE TABLE images (
+        id_image INTEGER PRIMARY KEY AUTOINCREMENT ,
+        url VARCHAR(255),
+        hauteur INT,
+        largeur INT
+);
+
+CREATE TABLE textes (
+        id_texte INTEGER PRIMARY KEY AUTOINCREMENT ,
+        id_objet INT ,
+        nom VARCHAR(255),
+        titre VARCHAR(255),
+        detail TEXT
+);
+
+CREATE TABLE objets (
+        id_objet INTEGER PRIMARY KEY AUTOINCREMENT ,
+        nom VARCHAR(255)
+);
+
+CREATE TABLE posters (
+        id_poster INTEGER PRIMARY KEY AUTOINCREMENT ,
+        id_objet INT ,
+        id_image INT ,
+        id_texte INT ,
+        nom VARCHAR(255)
+);
+
+CREATE TABLE ancres (
+        id_ancre INTEGER PRIMARY KEY AUTOINCREMENT ,
+        nom VARCHAR(255),
+        x INT,
+        y INT,
+        z INT,
+        angle INT
+);
+
+CREATE TABLE accroches (
+        id_accroche INTEGER PRIMARY KEY AUTOINCREMENT ,
+        id_ancre INT ,
+        id_poster INT
+);
+
+CREATE TABLE stations (
+        id_station INTEGER PRIMARY KEY AUTOINCREMENT ,
+        station_suivante INT
+);
+
+CREATE TABLE parcours (
+        id_parcours INTEGER PRIMARY KEY AUTOINCREMENT ,
+        nom VARCHAR(255),
+        station_depart INT
+);
+
+CREATE TABLE stations_accroches (
+        id_station INT ,
+        id_accroche INT
+);
