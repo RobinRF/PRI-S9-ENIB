@@ -15,7 +15,7 @@ class FocusCone extends THREE.Object3D {
         this.target.push(object)
     }
 
-    inSight(){
+    inSight(object){
         console.log("aah")
         var objectSeen=[]
         this.target.forEach(function(element){

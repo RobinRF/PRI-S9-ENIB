@@ -1,11 +1,20 @@
-
+/*Dépreciée. Ne pas utiliser. Laissée pour des raisons de compatibilitées
+Les methodes et attributs de groupe ont été ajouté dans THREE.Object3D*/
 function creerGroupe(nom){
 	var groupe  = new THREE.Group() ; 
 	groupe.name = nom ; 
 	return groupe ; 
 }
 	
+/*
+Génération du sol de la scène
+entrée : nom       : (String) nom donné au mesh
+		 largeur   : (int) largerur du sol
+		 hauteur   : (int) longueur du sol
+		 materiaux : (THREE.MeshLambertMaterial) texture du sol
 
+sortie : THREE.Mesh contenant le sol
+*/
 function creerSol(nom,largeur,hauteur,materiau){
 	var geo   = new THREE.PlaneGeometry(
 					largeur,hauteur,
@@ -16,6 +25,16 @@ function creerSol(nom,largeur,hauteur,materiau){
 	return mesh ;   
 }
 
+/*
+Génération d'une cloison
+entrée : nom       : (String) nom donné au mesh
+		 largeur   : (int) largerur de la cloison
+		 hauteur   : (int) hauteur de la cloison
+		 épaisseur : (int) épaisseur de la cloison
+		 materiaux : (THREE.MeshLambertMaterial) texture de la cloison
+
+sortie : THREE.Group contenant la cloison
+*/
 function creerCloison(nom,largeur, hauteur, epaisseur, materiau){
 	var geo  = new THREE.BoxGeometry(largeur, hauteur, epaisseur) ; 
 	var mesh = new THREE.Mesh(geo, materiau) ;
@@ -26,15 +45,25 @@ function creerCloison(nom,largeur, hauteur, epaisseur, materiau){
 	return groupe ;  	
 }
 
+/*
+Génération d'une sphère
+entrée : nom         : (String) nom donné au mesh
+		 rayon       : (int) rayon de la sphère
+		 subdivision : pas utilisé. laissé pour des raison de compabilitées.
+		 materiaux   : (THREE.MeshLambertMaterial) texture de la sphère
 
+sortie : THREE.Mesh contenant sphère
+*/
 function creerSphere(nom,rayon, subdivisions, materiau){
-	var geo  = new THREE.SphereGeometry(rayon, subdivisions, subdivisions) ; 
+	var geo  = new THREE.SphereGeometry(rayon) ; 
 	var mesh = new THREE.Mesh(geo, materiau) ; 
 	mesh.name = nom ; 
 	return mesh ;  
 }
 
-
+/*
+Déprécié au profit de creerPoster1
+*/
 function creerPoster(nom,largeur, hauteur, nomImage, titre){
 	var geo   = new THREE.PlaneGeometry(largeur, hauteur) ; 
 	var mat   = creerLambertTexture(nomImage, 0xffffff) ; 
@@ -43,33 +72,27 @@ function creerPoster(nom,largeur, hauteur, nomImage, titre){
 	return mesh ;   
 }
 
+/*
+Génération d'un poster (ou tableaux)
+entrée : nom         : (String) nom donné au mesh
+		 largeur     : (int) largeur du poster
+		 hauteur     : (int) hauteur du poster
+		 nomImage    : (String) chemin d'accès à l'image du poster
+		 Titre       : (String) Titre affiché sous le poster
+		 Description : (String) Déscription du poster. appelé par l'UI
+		 radius      : (int) Rayon du nimbus du poster
+
+sortie : (THREE.Group) poster à insérer dans la scène
+*/
 function creerPoster1(nom,largeur, hauteur, nomImage, titre, description,radius=5){
 	var geo    = new THREE.PlaneGeometry(largeur, hauteur) ; 
 	var mat    = creerLambertTexture(nomImage, 0xffffff) ; 
 	var mesh   = new THREE.Mesh(geo, mat) ; 
 	var dos    = new THREE.Mesh(geo, materiauBlanc) ; 
 	var groupe = new THREE.Group() ; 
-	/*loader.load( '/assets/fonts/helvetiker_regular.typeface.json', function ( font ) {
-
-	var geometry = new THREE.TextGeometry( titre , {
-		font: font,
-		size: 80,
-		height: 5,
-		curveSegments: 12,
-		bevelEnabled: true,
-		bevelThickness: 10,
-		bevelSize: 8,
-		bevelSegments: 5
-	} );
-	groupe.add(font);
-} );*/
-	//var text = new THREE.Mesh(textgeometry, materiauBlanc);
-   // text.position.y = -1;
-
 	dos.rotation.y = Math.PI ; 
 	dos.position.z = -0.01 ; 
 	mesh.position.z = 0.01 ; 
-	//mesh.name = nom ;
 	mesh.titre= titre;
 	mesh.description = description;
     listeIntersection.push(mesh) ; 
@@ -89,6 +112,14 @@ function creerPoster1(nom,largeur, hauteur, nomImage, titre, description,radius=
 	return groupe ;   
 }
 
+/*
+Génération d'une plaque décriptive contenant le titre pour les poster 
+entrée : Description : (String) texte contenu dans le canvas
+		 largeur     : (int) largeur du poster
+		 hauteur     : (int) hauteur du posterDescription
+		 
+sortie : (THREE.Mesh) plaque à insérer   
+*/
 function creerText(description,largeur,hauteur){
 	canvas = document.createElement('canvas')
 	context = canvas.getContext('2d');
@@ -101,15 +132,6 @@ function creerText(description,largeur,hauteur){
     context.textAlign = "center";
     context.textBaseline = "middle";
     context.fillText(description, canvas.width / 2, canvas.height / 2);
-	//context.fillStyle = 'white'
-	//context.fillRect(0, 0, canvas.width, canvas.height);
-	//context.fillStyle = 'blue';
-	//
-	//context.textAlign = "center";
-    //context.textBaseline = "middle";
-	//context.fillText(description, canvas.width / 2, canvas.height / 2);
-	//context.scale(0.01,0.01)
-	//document.body.appendChild(canvas) 
 
 	var geometry = new THREE.PlaneGeometry(largeur*0.9, hauteur*0.1) ; 
 	texture = new THREE.CanvasTexture(canvas);
@@ -120,9 +142,17 @@ function creerText(description,largeur,hauteur){
 
 }
 
-// ===================
-// Création de sources
-// ===================
+/* 
+Création de sources Lumineuses ponctuelle de la scène
+
+entrée : position    : (THREE.Vector3) Position de la source
+		 couleur     : (int) code coleur de la source
+		 intensite   : (int) intensitée de la source
+		 portee      : (int) portée de la source
+		 attenuation : (int) attenuation de la source
+
+sortie : (THREE.PointLight) source lumineuse à insérer dans la scène
+*/
 
 function creerSourcePonctuelle(position,couleur, intensite, portee, attenuation){
 	var light = new THREE.PointLight(couleur,intensite,portee,attenuation) ; 
@@ -130,6 +160,13 @@ function creerSourcePonctuelle(position,couleur, intensite, portee, attenuation)
 	return light ; 
 }
 
+/*
+Création de la source lumineuse glolbale de la scène
+
+Entrée : NA
+
+Sortie : (THREE.HemisphereLight) source lumineuse à insérer dans la scène
+*/
 function creerSoleil(){
 	var h = new THREE.HemisphereLight(0xffffbb,0x080820,1) ; 
 	return h ; 
@@ -141,7 +178,7 @@ function creerSoleil(){
 // Création de matériaux
 // =====================
 
-var textureLoader = new THREE.TextureLoader() ; 
+
 
 var materiauBlanc  = creerLambert(0xffffff) ; 
 var materiauRouge  = creerLambert(0xff0000) ;
@@ -152,6 +189,7 @@ function creerLambert(couleur){
 }
 
 function creerLambertTexture(nomImage,couleur,nx,ny){
+	var textureLoader = new THREE.TextureLoader() ; 
 	var texture = textureLoader.load(nomImage) ; 
 	var mat = new THREE.MeshLambertMaterial({color:couleur,map:texture}) ; 
 	nx = nx ||   1 ; 
@@ -190,8 +228,6 @@ function parentDe(pere,fils){
 
 var projector   = new THREE.Projector() ;
 var listeIntersection = [] ;  
-//var ext = null;
-//var origin = null;
 var mouseClicked = false;
 var ext = new THREE.Vector3()
 var origin = new THREE.Vector3()
@@ -212,26 +248,12 @@ function mouseDown(event){
 		mouseClicked = true;
 		intersects[0].object.material.transparent = true ; 
 		alert("titre du poster : " + intersects[0].object.titre +"\ndescription : "+intersects[0].object.description) ; 
-		//alert( intersects[0].point.x+" , "+intersects[0].point.y+" , "+intersects[0].point.z) ; 
 		pointeur.position.set(intersects[0].point.x,intersects[0].point.y,+intersects[0].point.z) ;
 		var world = intersects[0].object.matrixWorld;
-		//console.log(camera.position)
-		//camera.position.set(intersects[0].point.x,intersects[0].point.y,+intersects[0].point.z)
-		//camera.object.position.set(intersects[0].point.x,intersects[0].point.y,+intersects[0].point.z)
-		//console.log(camera.position)
-		// camera.matrixWorld=world;
-		// console.log(camera.matrixWorld);
-		// camera.translateX(2);
-		// console.log(intersects[0].object)
-		// camera.cible=intersects[0].object.position;
-		// vector = camera.getWorldDirection();
-		// angle = Math.atan2(vector.x,vector.z);
        	origin = new THREE.Vector3(0,0,0);
        	ext = new THREE.Vector3(0,0,2);
     	origin.applyMatrix4(world);
 		ext.applyMatrix4(world);
-       	//ext = ext;
-       	//origin = origin; 
 	}
 }
 
